@@ -12,6 +12,8 @@ use std::{u32, i32};
 use ffi::*;
 
 #[repr(C)]
+#[derive(Copy, Clone)]
+#[derive(Debug)]
 pub struct mpz_struct {
     _mp_alloc: c_int,
     _mp_size: c_int,
@@ -103,6 +105,10 @@ impl Drop for Mpz {
 }
 
 impl Mpz {
+    pub unsafe fn from_raw(raw: mpz_struct) -> Mpz {
+        Mpz { mpz: raw }
+    }
+
     pub unsafe fn inner(&self) -> mpz_srcptr {
         &self.mpz
     }
