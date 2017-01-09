@@ -4,6 +4,7 @@
 #![allow(non_camel_case_types)]
 
 extern crate libc;
+extern crate rustc_serialize;
 
 macro_rules! gen_overloads_inner {
     ($tr:ident, $meth:ident, $T:ident) => {

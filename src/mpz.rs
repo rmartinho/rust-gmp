@@ -8,6 +8,7 @@ use std::str::FromStr;
 use std::ops::{Div, Mul, Add, Sub, Neg, Shl, Shr, BitXor, BitAnd, BitOr, Rem};
 use std::ffi::CString;
 use std::{u32, i32};
+use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
 
 use ffi::*;
 
@@ -871,6 +872,19 @@ impl Shr<usize> for Mpz {
             __gmpz_fdiv_q_2exp(&mut res.mpz, &self.mpz, other as c_ulong);
             res
         }
+    }
+}
+
+impl Decodable for Mpz {
+    fn decode<D: Decoder>(d: &mut D) -> Result<Mpz, D::Error> {
+        Ok(Mpz::from_str(&d.read_str()?)
+            .map_err(|_| d.error("bad integer"))?)
+    }
+}
+
+impl Encodable for Mpz {
+    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> {
+        self.to_string().encode(s)
     }
 }
 

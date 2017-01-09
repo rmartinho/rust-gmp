@@ -13,3 +13,4 @@ name = "gmp"
 
 [dependencies]
 libc = "~0.2"
+rustc-serialize = "0.3"
